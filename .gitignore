@@ -1,0 +1,9 @@
+htdocs/files
+htdocs/.idea
+htdocs/protected/config/database.php
+.idea/
+htdocs/assets/
+htdocs/protected/runtime
+htdocs/protected/runtime/application.log
+*.log
+
