@@ -13,7 +13,11 @@ $id = $_GET["id"];
 $sql = "UPDATE items SET title='".$_POST['title']."', category='".$_POST['category']."', description='".$_POST['description']."' WHERE id='".$_POST['id']."'";
 
 if ($connection->query($sql) === TRUE) {
-    echo "Record updated successfully";
+    echo '<div class="container">
+            <h1>Record updated successfully</h1>
+        </div>';
 } else {
-    echo "Error updating record: " . $connection->error;
+    echo '<div class="container">
+            <h1>Error updating record: ' . $connection->error. '</h1>
+        </div>';
 }

@@ -13,7 +13,9 @@ $id = $_GET["id"];
 $sql = "DELETE FROM items WHERE id='".$id."'";
 
 if ($connection->query($sql) === TRUE) {
-    echo "Record deleted successfully";
+    echo '<div class="container">
+            <h1>Record deleted successfully</h1>
+        </div>';
 } else {
     echo "Error updating record: " . $connection->error;
 }
