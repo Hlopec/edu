@@ -10,6 +10,34 @@
  require_once ('session.php');
 
 
+
+
+$page = 1;
+if (isset($_GET['page'])) {
+    $page = (int)$_GET['page'];
+}
+
+$page_size = 10;
+$offset = ($page - 1) * $page_size;
+
+$total_pages_sql = "SELECT COUNT(*) as c FROM items";
+$result = mysqli_query($connection,$total_pages_sql);
+$total_rows = mysqli_fetch_array($result)['c'];
+$total_pages = ceil($total_rows / $page_size);
+
+
+
+$sql = "SELECT id, title, description, category FROM items LIMIT $offset, $page_size";
+$result_items = $connection->query($sql);
+
+$all_items = [];
+
+if ($result_items->num_rows > 0) {
+    while ($row = $result_items->fetch_assoc()) {
+        $all_items[] = $row;
+    }
+}
+
 $checkUser = "SELECT id, login, password FROM users";
 $resultUser = $connection->query($checkUser);
 if ($resultUser->num_rows > 0) {
@@ -18,68 +46,44 @@ if ($resultUser->num_rows > 0) {
         if ($user_id) {
             $_SESSION['user_id'] = $row['id'];
 
-            $sql = "SELECT id, title, description, category FROM items";
-            $result = $connection->query($sql);
-
-            if ($result->num_rows > 0) {
-                // output data of each row
-                while ($row = $result->fetch_assoc()) {
-
-                    echo '<div class="container">
-            <div>
-                <h1><a href="item-edit.php?id=' . $row["id"] . '">' . $row["title"] . '</a></h1>
-                <p><a href="categories.php?cat=' . $row["category"] . '">' . $row["category"] . '</a></p>
-                <p>' . $row["description"] . '</p>
-                <a class="btn btn-primary" href="item-edit.php?id=' . $row["id"] . '">Edit</a>
-                <a class="btn btn-danger" href="remove.php?id=' . $row["id"] . '">Remove</a>
-            </div>
-        </div>';
-
-//        $data = "id: " . $row["id"]. " - Title: " . $row["title"]. " " . $row["description"] . $row["category"]."<br>";
-                }
+            foreach ($all_items as $key => $value) {
+                echo '<div class="container">
+                        <div>
+                            <h1><a href="item-edit.php?id=' . $value["id"] . '">' . $value["title"] . '</a></h1>
+                            <p><a href="categories.php?cat=' . $value["category"] . '">' . $value["category"] . '</a></p>
+                            <p>' . $value["description"] . '</p>
+                            <a class="btn btn-primary" href="item-edit.php?id=' . $value["id"] . '">Edit</a>
+                            <a class="btn btn-danger" href="remove.php?id=' . $value["id"] . '">Remove</a>
+                        </div>
+                    </div>';
             }
-
-//        $data = "id: " . $row["id"]. " - Title: " . $row["title"]. " " . $row["description"] . $row["category"]."<br>";
-
         } else {
-            $sql = "SELECT id, title, description, category FROM items";
-            $result = $connection->query($sql);
+            foreach ($all_items as $key => $value) {
 
-            if ($result->num_rows > 0) {
-                // output data of each row
-                while ($row = $result->fetch_assoc()) {
-
-                    echo '<div class="container">
+                echo '<div class="container">
             <div>
-                <h1><a href="item.php?id=' . $row["id"] . '">' . $row["title"] . '</a></h1>
-                <p><a href="categories.php?cat=' . $row["category"] . '">' . $row["category"] . '</a></p>
-                <p>' . $row["description"] . '</p>
+                <h1><a href="item.php?id=' . $value["id"] . '">' . $value["title"] . '</a></h1>
+                <p><a href="categories.php?cat=' . $value["category"] . '">' . $value["category"] . '</a></p>
+                <p>' . $value["description"] . '</p>
             </div>
         </div>';
-                }
             }
         }
+        ?>
+
+        <div class="container">
+            <ul class="pagination">
+                <?php
+
+                for($i = 1; $i <= $total_pages; $i++){
+                    echo '<li><a href="?page=' . $i . '">' . ($i) . '</a></li>';
+                }
+                ?>
+            </ul>
+        </div>
+<?php
     }
 }
-//
-//$sql = "SELECT id, title, description, category FROM items";
-//$result = $connection->query($sql);
-//
-//if ($result->num_rows > 0) {
-//    // output data of each row
-//    while($row = $result->fetch_assoc()) {
-//
-//        echo '<div class="container">
-//            <div>
-//                <h1><a href="item.php?id=' . $row["id"]. '">' . $row["title"]. '</a></h1>
-//                <p>' . $row["category"] . '</p>
-//                <p>' . $row["description"] . '</p>
-//            </div>
-//        </div>';
-//
-////        $data = "id: " . $row["id"]. " - Title: " . $row["title"]. " " . $row["description"] . $row["category"]."<br>";
-//    }
-//} else {
-//    echo "0 results";
-//}
-//
+
+
+
