@@ -10,6 +10,19 @@ require_once('header.php');
 require_once('session.php');
 
 
+$sql_category= "SELECT category_id, category_name FROM category";
+$result_category = $connection->query($sql_category);
+
+$category_list = [];
+
+if ($result_category->num_rows > 0) {
+    while ($row = $result_category->fetch_assoc()) {
+        $category_list[] = $row;
+    }
+}
+
+
+
         echo '
 <div class="container">
     <form class="form-edit row" method="post" action="save-new-item.php">
@@ -20,7 +33,16 @@ require_once('session.php');
         </div>
         <div class="form-group">
             <label for="category">Category</label>
-            <input type="text" class="form-control" id="category" name="category">
+            <select class="form-control" id="category" name="category_id">
+            ';
+                        foreach ($category_list as $key => $value) {
+                             echo '
+                                            <option value = "' . $value["category_id"] . '"> ' . $value["category_name"] .  '</option>
+                                        ';
+                             var_dump($value["id"]);
+                            }
+                            echo '
+        </select>
         </div>
         <div class="form-group">
             <label for="description">Description</label>

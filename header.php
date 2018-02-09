@@ -25,7 +25,8 @@ require_once ('session.php');
                 <?php if($user_id){
                     echo '
                 <li><a href="session_destroy.php">Logout</a></li>
-                <li><a href="new-item.php">Add New Item</a></li>';
+                <li><a href="new-item.php">Add New Item</a></li>
+                <li><a href="edit-categories.php">Edit Categories</a></li>';
                 } else{
                     echo '
                 <li><a href="login.php">Login</a></li>';

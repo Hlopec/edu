@@ -2,22 +2,19 @@
 /**
  * Created by PhpStorm.
  * User: KVS
- * Date: 07.02.2018
- * Time: 14:27
+ * Date: 06.02.2018
+ * Time: 14:46
  */
-
 require_once('db.php');
 require_once('header.php');
-require_once ('session.php');
 
 
-$sql = "INSERT INTO items (title, category, description) VALUES ('".$_POST['title']."', {$_POST["category_id"]}, '".$_POST['description']."')";
-
-
+$id = $_GET["id"];
+$sql = "DELETE FROM category WHERE category_id='".$id."'";
 
 if ($connection->query($sql) === TRUE) {
     echo '<div class="container">
-            <h1>Completed</h1>
+            <h1>Record deleted successfully</h1>
         </div>';
 } else {
     echo "Error updating record: " . $connection->error;

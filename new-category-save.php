@@ -11,7 +11,7 @@ require_once('header.php');
 require_once ('session.php');
 
 
-$sql = "INSERT INTO items (title, category, description) VALUES ('".$_POST['title']."', {$_POST["category_id"]}, '".$_POST['description']."')";
+$sql = "INSERT INTO category (category_name) VALUES ('".$_POST['category_name']."')";
 
 
 

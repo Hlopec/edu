@@ -27,7 +27,7 @@ $total_pages = ceil($total_rows / $page_size);
 
 
 
-$sql = "SELECT id, title, description, category FROM items LIMIT $offset, $page_size";
+$sql = "SELECT items.*, category.category_name as category_name FROM items left join category ON items.category = category.category_id LIMIT $offset, $page_size";
 $result_items = $connection->query($sql);
 
 $all_items = [];
@@ -37,6 +37,7 @@ if ($result_items->num_rows > 0) {
         $all_items[] = $row;
     }
 }
+
 
 $checkUser = "SELECT id, login, password FROM users";
 $resultUser = $connection->query($checkUser);
@@ -50,7 +51,7 @@ if ($resultUser->num_rows > 0) {
                 echo '<div class="container">
                         <div>
                             <h1><a href="item-edit.php?id=' . $value["id"] . '">' . $value["title"] . '</a></h1>
-                            <p><a href="categories.php?cat=' . $value["category"] . '">' . $value["category"] . '</a></p>
+                            <p><a href="categories.php?cat=' . $value["category"] . '">' . $value["category_name"] . '</a></p>
                             <p>' . $value["description"] . '</p>
                             <a class="btn btn-primary" href="item-edit.php?id=' . $value["id"] . '">Edit</a>
                             <a class="btn btn-danger" href="remove.php?id=' . $value["id"] . '">Remove</a>
@@ -63,7 +64,7 @@ if ($resultUser->num_rows > 0) {
                 echo '<div class="container">
             <div>
                 <h1><a href="item.php?id=' . $value["id"] . '">' . $value["title"] . '</a></h1>
-                <p><a href="categories.php?cat=' . $value["category"] . '">' . $value["category"] . '</a></p>
+                <p><a href="categories.php?cat=' . $value["category"] . '">' . $value["category_name"] . '</a></p>
                 <p>' . $value["description"] . '</p>
             </div>
         </div>';
