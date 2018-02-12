@@ -84,6 +84,8 @@ if ($resultUser->num_rows > 0) {
         </div>
 <?php
     }
+}else{
+    header('Location: /login.php');
 }
 
 

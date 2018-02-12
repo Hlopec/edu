@@ -48,5 +48,6 @@ if ($resultUser->num_rows > 0) {
             </div>';
         }
     }
+}else{
+    header('Location: /login.php');
 }
-//$connection->close();

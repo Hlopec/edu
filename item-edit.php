@@ -25,22 +25,20 @@ if ($result_category->num_rows > 0) {
         $category_list[] = $row;
     }
 }
-//var_dump($category_list);
 
 
-//"SELECT items.id, category.category_name FROM items INNER JOIN category ON items.category = category.id;
-//INSERT INTO table3 ( name, age, sex, city, id, number, nationality)
-//SELECT name, age, sex, city, p.id, number, n.nationality
-//FROM table1 p
-//INNER JOIN table2 c ON c.Id = p.Id
-//INNER JOIN table3 n ON n.Id = p.Id";
+$checkUser = "SELECT id, login, password FROM users";
+$resultUser = $connection->query($checkUser);
+if ($resultUser->num_rows > 0) {
 
+    while ($row = $resultUser->fetch_assoc()) {
+        if ($user_id) {
+            $_SESSION['user_id'] = $row['id'];
 
-
-if ($result->num_rows > 0) {
-    // output data of each row
-    while ($row = $result->fetch_assoc()) {
-        echo '
+            if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                    echo '
             <div class="container">
                 <form class="form-edit row" method="post" action="save-changes.php">
                     <h1 class="h3 mb-3 font-weight-normal text-center">Edit item</h1>
@@ -52,12 +50,12 @@ if ($result->num_rows > 0) {
                     <div class="form-group">
                         <label for="category">Category</label>
                         <select class="form-control" id="category" name="category_id">';
-                        foreach ($category_list as $key => $value) {
-                             echo '
-                                           <option value = "' . $value["category_id"] . '"> ' . $value["category_name"] .  '</option>
+                    foreach ($category_list as $key => $value) {
+                        echo '
+                                           <option value = "' . $value["category_id"] . '"> ' . $value["category_name"] . '</option>
                                         ';
-                            }
-                            echo '
+                    }
+                    echo '
                 </select>
                 </div>
                     <div class="form-group">
@@ -67,18 +65,10 @@ if ($result->num_rows > 0) {
                     <button type="submit" class="btn btn-primary">Save</button>
                 </form>
             </div>';
+                }
+            }
         }
+    }
+}else{
+    header('Location: /login.php');
 }
-
-
-
-
-//<div class="container">
-//            <div>
-//                <input type="text" name="title" value="' . $row["title"] . '">
-//                <input type="text" name="category" value="' . $row["category"] . '">
-//                <textarea name="description">' . $row["description"] . '</textarea>
-//            </div>
-//        </div>';
-//        }
-//}
